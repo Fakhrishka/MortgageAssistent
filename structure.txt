@@ -1,0 +1,13 @@
+STRUCTURE :
+
+routes	
+	AUTH ( LOGIN & REGISTER & FORGOT PASSWORD )
+
+models
+	User
+	Client
+
+public
+	(html files)
+
+

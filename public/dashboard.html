@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Dashboard</h1>
+
+    <form id='dashboardForm'>
+        <div id="dashboard"></div>
+    </form>
+        <form id="logOut">
+            <button type="submit">Log Out</button>
+                
+        </form>
+
+    <script>
+
+        // Получаем токен из localStorage
+        // const token = localStorage.getItem('token');
+
+        // axios.defaults.headers.common['Authorization'] = token;
+        // if (!token) {
+        //     window.location.href = 'login.html'; // Перенаправляем на страницу логина, если нет токена
+        // }
+
+        // // axios.get('/api/dashboard', {
+        // //     headers: {
+        // //         'Authorization': token
+        // //     }
+        // // });
+        
+
+        // async function loadDashboard() {
+        //     try {
+        //         const response = await axios.get('http://localhost:3001/api/dashboard');
+        //         console.log(response.data);
+        //         // const data = await response.json();
+
+        //         document.getElementById('dashboard').innerHTML = `<p>${response.data.message}</p>`;
+        //     } catch (error) {
+        //         console.error('Error loading dashboard:', error);
+        //     }
+        // }
+
+        // loadDashboard();
+
+
+
+    </script>
+</body>
+<script src="script.js"></script>
+</html>
