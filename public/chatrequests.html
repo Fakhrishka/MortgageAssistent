@@ -1,24 +1,22 @@
+<!-- // chat.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>Dashboard</h1>
+    <h1>Requests are here!</h1>
 
 
-    <a href="newrequest.html">Create New Request</a>
-    <a href="chat.html">Communications</a>
-
-    <form id='dashboardForm'>
-        <div id="dashboard"></div>
+	<form id='chatRequests'>
+        <div id="requests"></div>
     </form>
 
-    <table id="data-table" border="1">
+    <table id="requests-table" border="1">
         <thead>
             <tr>
                 <th>Name</th>
@@ -34,15 +32,8 @@
 
 
 
-
-
-
-
 </body>
-<footer>
-    <form id="logOut">
-        <button type="submit">Log Out</button>
-                
-    </form>
-</footer>
 </html>
+
+
+<script defer src="script.js"></script>

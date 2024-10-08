@@ -10,7 +10,7 @@ function authMiddleware(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, config.secretKey); // Используй твой секретный ключ
-        console.log(decoded);
+        // console.log(decoded);
         req.user = decoded; // Добавляем информацию о пользователе в запрос
         next();
     } catch (error) {

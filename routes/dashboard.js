@@ -10,16 +10,11 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
     try {
 
         const user = req.user; // Получаем пользователя из middleware
-        // console.log(req.user);
-        // id = user.id;
-        // const username = User.findOne({id});
-        // console.log('USER: '+username);
-
         res.json({
-            message: `Welcome to your dashboard, ${user.role}`,
+            message: `Welcome to your dashboard, ${user.login}`,
             user: {
                 id: user.id,
-                role: user.role,
+                login: user.login,
             }
         });
     } catch (error) {

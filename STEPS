@@ -1,0 +1,7 @@
+1) Create new chat request
+2) check if request was created before
+3) after request is confirmed/cancelled -> act
+4) if confirmed -> allow communication
+4.b) if cancelled -> deny
+
+5) if confirmed -> start sending messages between each other

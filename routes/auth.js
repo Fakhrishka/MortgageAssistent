@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 require('dotenv').config();
+const config = require('../config');
 
 
 const User = require('../models/User');
@@ -11,7 +12,78 @@ const User = require('../models/User');
 
 // Регистрация пользователя
 
-router.get('/users', async(req,res) => {
+router.get('/getUserByToken', async(req,res) => {
+    const token = req.header('Authorization');
+
+    if (!token)
+        return res.status(401).json({ message: 'No token, authorization denied' });
+
+    try
+    {
+        const decoded = jwt.verify(token, config.secretKey); // Используй твой секретный ключ
+        return res.json(decoded);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(401).json({ message: 'Token is not valid' });
+    }
+});
+
+router.post('/getUserData', async(req,res) => {
+    const { token } = req.body;
+
+    if(!token)
+        return res.status(401).json({ message: 'No token, authorization denied' });
+
+    const User = jwt.verify(token, config.secretKey);
+    return res.json(User);
+});
+
+router.post('/getUserDataByLogin', async(req,res) => { // getting User Info via his Login
+    const {login} = req.body;
+
+    const user = await User.findOne({login}); // delete password sending (block it) or make some verification who can check this info
+    if(user) res.json(user);
+});
+
+
+router.post('/getUsersByRole', async(req,res) => {
+    const { token } = req.body; // console.log(req.header('Authorization'));
+
+    if (!token)
+        return res.status(401).json({ message: 'No token, authorization denied' });
+
+    try
+    {
+        const userInfo = jwt.verify(token, config.secretKey);
+
+        let roleFilter;
+
+        if (userInfo.role ==='bank')
+            roleFilter = 'broker';
+        else if(userInfo.role === 'broker')
+            roleFilter = 'bank';
+
+        const Users = await User.find({ role : roleFilter});
+        let arrayOfUsers = [];
+
+        for (const [key, value] of Object.entries(Users)) {
+            // console.log(`${key}: ${value} line 61`);
+            for(const [key1, value1] of Object.entries(value))
+            {
+                const userObj = { login: value1.login, email: value1.email};
+                arrayOfUsers.push(userObj);
+            }
+        }
+        return res.json(arrayOfUsers);
+    }
+    catch (error){
+        console.log(error);
+        res.status(500).json({message: error.message});
+    }
+});
+
+router.get('/users', async(req,res) => { // getting all users + make it for admin ONLY in future
     try
     {
         let Users = await User.find();
@@ -42,7 +114,7 @@ router.get('/users', async(req,res) => {
 
 router.post('/register', async (req, res) => {
     const { login, password, email, role } = req.body;
-    console.log(email);
+
     try {
         let user = await User.findOne({ email });
         if (user) {
@@ -54,7 +126,7 @@ router.post('/register', async (req, res) => {
         await user.save();
 
         // Генерация JWT
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id, login: user.login, role: user.role}, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.json({ token });
 
     } catch (error) {
@@ -87,7 +159,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Генерация JWT
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id, login: user.login, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.json({ token });
 
     } catch (error) {

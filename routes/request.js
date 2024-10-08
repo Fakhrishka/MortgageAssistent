@@ -3,6 +3,7 @@ const router = express.Router();
 const Request = require('../models/Request');
 const multer = require('multer');
 const mongoose = require('mongoose');
+const authMiddleware = require('../middleware/authMiddleware');
 
 // REQUEST STRUCTURE :
 	// name: {type :String, required: true},
@@ -17,9 +18,8 @@ const upload = multer({ dest: 'uploads/' });
 router.get('/', async(req,res) => {
 	try
 	{
-		console.log('wtf');
-
 		const requests = await Request.find();
+
 		if(requests.length === 0)
 			console.log('no requests available');
 		else
@@ -33,11 +33,10 @@ router.get('/', async(req,res) => {
 
 
 
-router.post('/submit', upload.single('document'), async (req, res) => {
+router.post('/newrequest', authMiddleware, async (req, res) => {
   try {
 		// console.log('test_line13');
 	    const { name, salary, emiratesID, birthdate  } = req.body;
-	    console.log(req.body);
 
 	    // Создаём нового клиента и сохраняем его в базе данных
 	    const request = new Request({
@@ -46,13 +45,12 @@ router.post('/submit', upload.single('document'), async (req, res) => {
 			emiratesID,
 			birthdate, // Сохраняем путь к файлу
 	    });
-	    console.log(Request);
-	   	console.log('test'); 
+
 	    await request.save(); // Сохраняем данные в базе
 
 	    res.send(`Данные клиента сохранены! Имя: ${name}, Дата рождения: ${birthdate}, Зарплата: ${salary}`);
+
 	  } catch (error) {
-	  	console.log(error);
 	    res.status(500).send('Ошибка при сохранении данных: ' + error);
 	  }
 });

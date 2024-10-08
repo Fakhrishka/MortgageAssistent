@@ -15,6 +15,7 @@ const Request = require('./models/Request');
 
 // routings :
 const dashboardRoutes = require('./routes/dashboard');
+const chatRequestRoutes = require('./routes/chatRequest');
 const authRoutes = require('./routes/auth');
 const requestRoutes = require('./routes/request');
 
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/request', requestRoutes);
+app.use('/api/chatRequest', chatRequestRoutes)
 app.use('/api', dashboardRoutes);
 
 // console.log(Request);
@@ -48,30 +50,30 @@ async function getAllRequests()
 // getAllRequests();
 
 
-const upload = multer({ dest: 'uploads/' });
-app.post('/submit', upload.single('document'), async (req, res) => {
-  try {
-		// console.log('test_line13');
-	    const { name, salary, emiratesID, birthdate  } = req.body;
-	    console.log('11');
+// const upload = multer({ dest: 'uploads/' });
+// app.post('/submit', upload.single('document'), async (req, res) => {
+//   try {
+// 		// console.log('test_line13');
+// 	    const { name, salary, emiratesID, birthdate  } = req.body;
+// 	    console.log('11');
 
-	    // Создаём нового клиента и сохраняем его в базе данных
-	    const request = new Request({
-			name, 
-			salary, 
-			emiratesID,
-			birthdate, // Сохраняем путь к файлу
-	    });
-	    console.log(request);
-	   	console.log('test'); 
-	   	const a =  await request.save(); // Сохраняем данные в базе
-console.log(a);
-	    res.send(`Данные клиента сохранены! Имя: ${name}, Дата рождения: ${birthdate}, Зарплата: ${salary}`);
-	  } catch (error) {
-	  	console.log(error);
-	    res.status(500).send('Ошибка при сохранении данных: ' + error);
-	  }
-});
+// 	    // Создаём нового клиента и сохраняем его в базе данных
+// 	    const request = new Request({
+// 			name, 
+// 			salary, 
+// 			emiratesID,
+// 			birthdate, // Сохраняем путь к файлу
+// 	    });
+// 	    console.log(request);
+// 	   	console.log('test'); 
+// 	   	const a =  await request.save(); // Сохраняем данные в базе
+// console.log(a);
+// 	    res.send(`Данные клиента сохранены! Имя: ${name}, Дата рождения: ${birthdate}, Зарплата: ${salary}`);
+// 	  } catch (error) {
+// 	  	console.log(error);
+// 	    res.status(500).send('Ошибка при сохранении данных: ' + error);
+// 	  }
+// });
 
 // async function getClients() {
 //     try {
@@ -89,10 +91,6 @@ console.log(a);
 
 
 
-// console.log('hehehe');
-// app.get('./routes/auth.js', (req, res) => {
-//   console.log('allworks');
-// });
 
 // SERVER START
 app.listen(config.port, () =>
